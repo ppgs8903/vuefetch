@@ -1,0 +1,42 @@
+{
+  "name": "vuefetch",
+  "version": "0.0.0",
+  "description": "A vue plugin for send fetch request and handle responses with promise function.",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack-dev-server",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppgs8903/vuefetch.git"
+  },
+  "keywords": [
+    "vue",
+    "fetch",
+    "plugins",
+    "vue-fetch",
+    "vuefetch"
+  ],
+  "author": "JasonTao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ppgs8903/vuefetch/issues"
+  },
+  "homepage": "https://github.com/ppgs8903/vuefetch#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "html-webpack-plugin": "^2.30.1",
+    "vue": "^2.4.2",
+    "vue-template-compiler": "^2.4.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "cross-env": "^5.0.5",
+    "whatwg-fetch": "^2.0.3"
+  }
+}
