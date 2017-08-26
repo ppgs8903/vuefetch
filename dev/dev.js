@@ -20,7 +20,7 @@ var vuefechDemo = new Vue({
   mounted: function() {
     let s = this.getJson()
     s.then(data => {
-        console.log(data)
+      this.vuefech_get = data
     })
   }
 })
