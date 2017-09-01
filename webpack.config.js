@@ -2,20 +2,11 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+const ASSET_PATH = process.env.ASSET_PATH || '/'
+const NODE_ENV = process.env.NODE_ENV|| 'development'
 
 module.exports = {
-  entry: {
-    vuefetch: [
-      './dev/dev.js',
-      'webpack/hot/dev-server'
-    ]
-  },
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
-  },
+  entry: {},
   resolve: {
     alias: {
       'vue': 'vue/dist/vue.js'
@@ -26,8 +17,53 @@ module.exports = {
     extensions: [".js", ".json"],
     mainFields: ["loader", "main"]
   },
-  devtool: "cheap-module-eval-source-map",
-  devServer: {
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        use: 'vue-loader'
+      },
+      {
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/
+      }
+    ]
+  }
+}
+
+if (NODE_ENV === 'production') {
+  module.exports.entry.vuefetch = [
+    './index.js'
+  ]
+  module.exports.output = {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
+    library: "vuefetch",
+    libraryTarget: "umd"
+  },
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'NODE_ENV': JSON.stringify('production'),
+      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
+  ])
+  module.exports.devtool = 'source-map'
+} else {
+  module.exports.entry.vuefetch = [
+    './index.js'
+  ]
+  module.exports.output = {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
+  },
+  module.exports.devServer = {
     contentBase: path.join(__dirname, "dist"),
     compress: false,
     port: 3000,
@@ -48,20 +84,7 @@ module.exports = {
       });
     }
   },
-  module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        use: 'vue-loader'
-      },
-      {
-        test: /\.js$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
-      }
-    ]
-  },
-  plugins: [
+  module.exports.plugins = (module.exports.plugins || []).concat([
     new HtmlWebpackPlugin({
       template: 'index.ejs',
       inject: true
@@ -72,5 +95,6 @@ module.exports = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
-  ]
+  ])
+  module.exports.devtool = '#eval-source-map'
 }
